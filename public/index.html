@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#fbf7f2">
+  <title>Baan Siam – Thailändische Küche</title>
+  <meta name="description" content="Authentische thailändische Küche – frisch gekocht, online bestellen zur Abholung oder Lieferung.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍜</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header" id="top">
+    <div class="container header__inner">
+      <a href="#top" class="logo">
+        <span class="logo__mark">บ</span>
+        <span class="logo__text">Baan Siam</span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="#menu">Speisekarte</a>
+        <a href="#about">Über uns</a>
+        <a href="#info">Öffnungszeiten</a>
+        <a href="#contact">Kontakt</a>
+      </nav>
+      <div class="header__actions">
+        <button class="cart-btn" id="cartOpen" aria-label="Warenkorb öffnen">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span class="cart-btn__count" id="cartCount">0</span>
+        </button>
+        <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <!-- Live-Status einer laufenden Bestellung -->
+    <button class="order-banner" id="orderBanner" hidden>
+      <span class="order-banner__dot"></span>
+      <span id="orderBannerText">Deine Bestellung</span>
+      <span class="order-banner__more">Details ›</span>
+    </button>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__text">
+        <span class="badge" id="openBadge">&nbsp;</span>
+        <h1>Echte Thai-Küche.<br><em>Frisch aus dem Wok.</em></h1>
+        <p>Hausgemachte Currypasten, frische Kräuter und Rezepte aus Bangkok – jetzt online bestellen zur Abholung oder Lieferung.</p>
+        <div class="hero__cta">
+          <a href="#menu" class="btn btn--primary">Jetzt bestellen</a>
+          <a href="#about" class="btn btn--ghost">Mehr erfahren</a>
+        </div>
+        <ul class="hero__facts">
+          <li><strong>30–45</strong> Min. Lieferzeit</li>
+          <li><strong>4,8 ★</strong> 1.200+ Bewertungen</li>
+          <li><strong data-setting="minOrderDelivery">15 €</strong> Mindest&shy;bestellwert</li>
+        </ul>
+      </div>
+      <div class="hero__visual" aria-hidden="true">
+        <div class="bowl">
+          <span class="bowl__emoji">🍜</span>
+        </div>
+        <div class="float float--1">🌶️</div>
+        <div class="float float--2">🥥</div>
+        <div class="float float--3">🌿</div>
+        <div class="float float--4">🍋</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu -->
+  <section class="menu" id="menu">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Speisekarte</span>
+        <h2>Was darf's heute sein?</h2>
+      </div>
+
+      <!-- Filter (scrollen mit) -->
+      <div class="filters">
+        <label class="search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="search" id="searchInput" placeholder="Gericht suchen …" aria-label="Gericht suchen" enterkeyhint="search">
+        </label>
+        <label class="chip-toggle"><input type="checkbox" id="filterVeggie"> 🌱 Veggie</label>
+        <button class="chip-toggle" id="allergenToggle" aria-expanded="false" aria-controls="allergenPanel">⚠️ Allergien <b id="allergenCount" hidden></b></button>
+      </div>
+      <div class="allergen-panel" id="allergenPanel" hidden>
+        <p>Was verträgst du nicht? Gerichte mit diesen Zutaten werden ausgeblendet.</p>
+        <div class="allergen-panel__chips" id="allergenChips"></div>
+      </div>
+
+      <!-- Kategorien (bleiben beim Scrollen oben) -->
+      <div class="menu__toolbar" id="menuToolbar">
+        <div class="tabs" id="categoryTabs" role="tablist"></div>
+      </div>
+
+      <div class="shop-notice" id="shopNotice" hidden></div>
+
+      <div class="menu__grid" id="menuGrid">
+        <p class="menu__loading">Speisekarte wird geladen …</p>
+      </div>
+      <p class="menu__empty" id="menuEmpty" hidden>Keine Gerichte gefunden. Versuche einen anderen Filter.</p>
+      <p class="menu__hidden" id="menuHidden" hidden></p>
+
+      <p class="menu__legend">🌶️ = Schärfegrad · 🌱 = vegetarisch<br>Allergenangaben nach bestem Wissen. Bei schweren Allergien bitte zusätzlich in den Anmerkungen zur Bestellung vermerken.</p>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about" id="about">
+    <div class="container about__inner">
+      <div class="about__visual" aria-hidden="true">
+        <div class="about__tile">🍛</div>
+        <div class="about__tile">🥭</div>
+        <div class="about__tile">🍤</div>
+        <div class="about__tile">🥢</div>
+      </div>
+      <div class="about__text">
+        <span class="eyebrow">Unsere Geschichte</span>
+        <h2>Von Bangkok in deine Nachbarschaft</h2>
+        <p>Seit 2012 kocht Familie Suwan bei uns nach den Rezepten ihrer Großmutter. Unsere Currypasten stampfen wir jeden Morgen selbst – mit Zitronengras, Galgant und Kaffirlimette.</p>
+        <div class="features">
+          <div class="feature"><span>🌿</span><div><strong>Frische Zutaten</strong><p>Täglich geliefert, regional wo möglich.</p></div></div>
+          <div class="feature"><span>👩‍🍳</span><div><strong>Hausgemacht</strong><p>Keine Fertigsaucen, keine Geschmacksverstärker.</p></div></div>
+          <div class="feature"><span>♻️</span><div><strong>Nachhaltig verpackt</strong><p>Kompostierbare Boxen für jede Bestellung.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Info -->
+  <section class="info" id="info">
+    <div class="container info__grid">
+      <div class="card">
+        <h3>🕐 Öffnungszeiten</h3>
+        <ul class="hours" id="hoursList"></ul>
+      </div>
+      <div class="card">
+        <h3>🚚 Lieferung</h3>
+        <ul class="plain">
+          <li>Mindestbestellwert: <strong data-setting="minOrderDelivery">15,00 €</strong></li>
+          <li>Liefergebühr: <strong data-setting="deliveryFee">2,50 €</strong></li>
+          <li>Gratis Lieferung ab <strong data-setting="freeDeliveryFrom">35,00 €</strong></li>
+          <li>Liefergebiet: ca. 5 km Umkreis</li>
+        </ul>
+      </div>
+      <div class="card" id="contact">
+        <h3>📍 Kontakt</h3>
+        <ul class="plain">
+          <li>Musterstraße 12, 10115 Berlin</li>
+          <li><a href="tel:+49301234567">030 123 45 67</a></li>
+          <li><a href="mailto:hallo@baansiam.de">hallo@baansiam.de</a></li>
+          <li>Tischreservierung telefonisch</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© <span id="year"></span> Baan Siam</span>
+      <nav><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">AGB</a></nav>
+    </div>
+  </footer>
+
+  <!-- Mobile sticky cart bar -->
+  <button class="cart-bar" id="cartBar" hidden>
+    <span class="cart-bar__count" id="cartBarCount">0</span>
+    <strong>Warenkorb ansehen</strong>
+    <span id="cartBarTotal">0,00 €</span>
+  </button>
+
+  <!-- Cart drawer (Desktop: Seitenleiste, Handy: Bottom-Sheet) -->
+  <div class="overlay" id="overlay" hidden></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
+    <div class="drawer__handle" aria-hidden="true"></div>
+    <div class="drawer__head">
+      <h3 id="drawerTitle">Dein Warenkorb</h3>
+      <button class="icon-btn" id="cartClose" aria-label="Schließen">✕</button>
+    </div>
+
+    <!-- Schritt 1: Warenkorb -->
+    <div class="drawer__body" id="stepCart">
+      <div class="mode-switch" role="radiogroup" aria-label="Bestellart">
+        <button class="mode-switch__btn is-active" data-mode="delivery" role="radio">🚚 Lieferung<small data-wait="delivery"></small></button>
+        <button class="mode-switch__btn" data-mode="pickup" role="radio">🛍️ Abholung<small data-wait="pickup"></small></button>
+      </div>
+      <p class="drawer-notice" id="drawerNotice" hidden></p>
+      <ul class="cart-list" id="cartList"></ul>
+      <div class="cart-empty" id="cartEmpty">
+        <span>🥡</span>
+        <p>Dein Warenkorb ist noch leer.</p>
+        <button class="btn btn--ghost" data-close>Zur Speisekarte</button>
+      </div>
+    </div>
+
+    <!-- Schritt 2: Kundendaten -->
+    <form class="drawer__body" id="stepCheckout" hidden novalidate>
+      <button type="button" class="back-link" id="backToCart">← Zurück zum Warenkorb</button>
+      <div class="field-row">
+        <label class="field"><span>Name *</span><input name="name" required autocomplete="name" enterkeyhint="next"></label>
+        <label class="field"><span>Telefon *</span><input name="phone" type="tel" required autocomplete="tel" inputmode="tel" enterkeyhint="next"></label>
+      </div>
+      <label class="field"><span>E-Mail *</span><input name="email" type="email" required autocomplete="email" inputmode="email" enterkeyhint="next"></label>
+      <div class="delivery-only">
+        <label class="field"><span>Straße & Hausnummer *</span><input name="street" required autocomplete="street-address" enterkeyhint="next"></label>
+        <div class="field-row field-row--zip">
+          <label class="field"><span>PLZ *</span><input name="zip" required inputmode="numeric" pattern="\d{5}" maxlength="5" autocomplete="postal-code" enterkeyhint="next"></label>
+          <label class="field"><span>Ort *</span><input name="city" required autocomplete="address-level2" enterkeyhint="next"></label>
+        </div>
+      </div>
+      <label class="field"><span>Zeitpunkt</span>
+        <select name="time" id="timeSelect"></select>
+      </label>
+      <label class="field"><span>Zahlung</span>
+        <select name="payment" id="paymentSelect">
+          <option value="online">Online bezahlen (Karte, Apple Pay, PayPal …)</option>
+          <option value="bar">Bar bei Übergabe</option>
+          <option value="karte">Karte bei Übergabe</option>
+        </select>
+      </label>
+      <label class="field"><span>Anmerkungen</span><textarea name="notes" rows="2" maxlength="500" placeholder="z. B. Klingel defekt, weniger scharf …"></textarea></label>
+      <p class="form-error" id="formError" role="alert" hidden></p>
+    </form>
+
+    <!-- Schritt 3: Bestätigung + Live-Status -->
+    <div class="drawer__body confirm" id="stepDone" hidden>
+      <div class="confirm__icon">✓</div>
+      <h3>Danke für deine Bestellung!</h3>
+      <p>Bestellnummer <strong id="orderId"></strong></p>
+      <p class="confirm__eta" id="orderEta"></p>
+      <p class="confirm__mail" id="orderMail"></p>
+      <ol class="tracker" id="tracker">
+        <li data-step="neu"><span></span>Eingegangen</li>
+        <li data-step="zubereitung"><span></span>In Zubereitung</li>
+        <li data-step="fertig"><span></span><em id="trackerReadyLabel">Unterwegs</em></li>
+      </ol>
+      <p class="tracker__cancelled" id="trackerCancelled" hidden></p>
+      <div class="confirm__actions">
+        <a class="btn btn--ghost" id="statusLink" href="#">Status-Seite öffnen</a>
+        <button class="btn btn--primary" data-close>Fertig</button>
+      </div>
+    </div>
+
+    <div class="drawer__foot" id="drawerFoot">
+      <div class="sum-row"><span>Zwischensumme</span><span id="subtotal">0,00 €</span></div>
+      <div class="sum-row" id="feeRow"><span>Liefergebühr</span><span id="fee">2,50 €</span></div>
+      <div class="sum-row sum-row--total"><span>Gesamt</span><span id="total">0,00 €</span></div>
+      <p class="hint" id="minHint"></p>
+      <p class="pay-hint" id="payHint" hidden>🔒 Nach dem Klick geht es direkt zur sicheren Online-Zahlung.</p>
+      <button class="btn btn--primary btn--block" id="checkoutBtn">Zur Kasse</button>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "port": 8000,
+  "kitchenPin": "1234",
+
+  "publicUrl": "",
+
+  "restaurant": {
+    "name": "Baan Siam",
+    "phone": "030 123 45 67",
+    "email": "hallo@baansiam.de",
+    "address": "Musterstraße 12, 10115 Berlin"
+  },
+
+  "onlinePayment": true,
+  "stripe": {
+    "secretKey": "",
+    "webhookSecret": ""
+  },
+
+  "smtp": {
+    "host": "",
+    "port": 587,
+    "user": "",
+    "password": "",
+    "from": "Baan Siam <bestellung@baansiam.de>"
+  }
+}

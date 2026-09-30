@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex">
+  <title>Demo-Zahlung · Baan Siam</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="status-page">
+  <div class="demo-banner">🧪 DEMO-MODUS – hier wird nichts bezahlt. Mit einem Stripe-Schlüssel in config.json erscheint stattdessen die echte Stripe-Bezahlseite.</div>
+
+  <main class="container status">
+    <section class="status__card">
+      <span class="eyebrow" id="payNumber">Zahlung</span>
+      <h1>Online bezahlen</h1>
+      <p class="status__eta">Zu zahlen: <strong id="payTotal">–</strong></p>
+
+      <ul class="status__items" id="payItems"></ul>
+
+      <div class="demo-methods" aria-hidden="true">
+        <span>💳 Karte</span><span>Apple Pay</span><span>Google Pay</span><span>PayPal</span><span>Klarna</span>
+      </div>
+      <p class="status__updated">Welche Zahlarten angeboten werden, stellst du später im Stripe-Dashboard ein.</p>
+
+      <p class="form-error" id="payError" hidden></p>
+      <div class="confirm__actions">
+        <button class="btn btn--primary" id="payOk">Zahlung erfolgreich simulieren</button>
+        <button class="btn btn--ghost" id="payCancel">Abbrechen</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const token = new URLSearchParams(location.search).get("t");
+    const euro = (n) => n.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
+    const $ = (s) => document.querySelector(s);
+
+    fetch(`/api/status/${encodeURIComponent(token)}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((o) => {
+        $("#payNumber").textContent = `Bestellung #${o.number}`;
+        $("#payTotal").textContent = euro(o.total);
+        $("#payItems").replaceChildren(...o.items.map((i) => Object.assign(document.createElement("li"), { textContent: `${i.qty}× ${i.name}` })));
+        if (o.status !== "zahlung") {
+          $("#payError").textContent = "Diese Bestellung wartet nicht mehr auf eine Zahlung.";
+          $("#payError").hidden = false;
+          $("#payOk").disabled = true;
+        }
+      })
+      .catch(() => { $("#payError").textContent = "Bestellung nicht gefunden."; $("#payError").hidden = false; });
+
+    async function finish(action) {
+      $("#payOk").disabled = $("#payCancel").disabled = true;
+      const res = await fetch(`/api/demo-pay/${encodeURIComponent(token)}`, {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action }),
+      });
+      const data = await res.json();
+      location.href = data.redirectUrl || "/";
+    }
+    $("#payOk").addEventListener("click", () => finish("pay"));
+    $("#payCancel").addEventListener("click", () => finish("cancel"));
+  </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+{
+  "settings": {
+    "minOrderDelivery": 15,
+    "deliveryFee": 2.5,
+    "freeDeliveryFrom": 35,
+    "prepMinutes": { "pickup": 20, "delivery": 40 },
+    "testMode": true
+  },
+
+  "hours": {
+    "0": ["12:00", "21:30"],
+    "1": null,
+    "2": ["11:30", "22:00"],
+    "3": ["11:30", "22:00"],
+    "4": ["11:30", "22:00"],
+    "5": ["11:30", "23:00"],
+    "6": ["12:00", "23:00"]
+  },
+
+  "allergens": {
+    "A": "Gluten",
+    "B": "Krebstiere",
+    "C": "Ei",
+    "D": "Fisch",
+    "E": "Erdnuss",
+    "F": "Soja",
+    "G": "Milch",
+    "H": "Schalenfrüchte",
+    "I": "Sellerie",
+    "J": "Senf",
+    "K": "Sesam",
+    "L": "Sulfite",
+    "M": "Lupinen",
+    "N": "Weichtiere"
+  },
+
+  "categories": [
+    { "id": "all", "label": "Alle" },
+    { "id": "starter", "label": "Vorspeisen" },
+    { "id": "soup", "label": "Suppen" },
+    { "id": "curry", "label": "Currys" },
+    { "id": "wok", "label": "Wok & Nudeln" },
+    { "id": "dessert", "label": "Desserts" },
+    { "id": "drinks", "label": "Getränke" }
+  ],
+
+  "items": [
+    { "id": 1,  "cat": "starter", "name": "Frühlingsrollen", "desc": "Knusprig frittiert, mit Glasnudeln & Gemüse, Sweet-Chili-Dip", "price": 5.9, "emoji": "🥟", "spice": 0, "veggie": true, "popular": true, "allergens": ["A", "F"] },
+    { "id": 2,  "cat": "starter", "name": "Satay Gai", "desc": "Gegrillte Hähnchenspieße mit hausgemachter Erdnusssauce", "price": 7.5, "emoji": "🍢", "spice": 0, "veggie": false, "allergens": ["E", "F"] },
+    { "id": 3,  "cat": "starter", "name": "Som Tam", "desc": "Grüner Papayasalat mit Limette, Chili, Fischsauce & gerösteten Erdnüssen", "price": 8.9, "emoji": "🥗", "spice": 3, "veggie": false, "allergens": ["B", "D", "E"] },
+    { "id": 4,  "cat": "starter", "name": "Garnelen im Teigmantel", "desc": "Tempura-Garnelen mit Pflaumensauce", "price": 8.5, "emoji": "🍤", "spice": 0, "veggie": false, "allergens": ["A", "B", "C"] },
+
+    { "id": 5,  "cat": "soup", "name": "Tom Yum Goong", "desc": "Scharf-saure Suppe mit Garnelen, Zitronengras & Galgant", "price": 7.9, "emoji": "🍲", "spice": 3, "veggie": false, "popular": true, "allergens": ["B", "D"] },
+    { "id": 6,  "cat": "soup", "name": "Tom Kha Gai", "desc": "Kokos-Galgant-Suppe mit Hähnchen & Champignons", "price": 7.5, "emoji": "🥥", "spice": 1, "veggie": false, "allergens": ["D"] },
+    { "id": 7,  "cat": "soup", "name": "Tom Kha Tofu", "desc": "Kokos-Galgant-Suppe mit Tofu & Gemüse", "price": 6.9, "emoji": "🥣", "spice": 1, "veggie": true, "allergens": ["F"] },
+
+    { "id": 8,  "cat": "curry", "name": "Gaeng Keow Wan", "desc": "Grünes Curry mit Hähnchen, Thai-Aubergine & Basilikum, dazu Jasminreis", "price": 13.9, "emoji": "🍛", "spice": 2, "veggie": false, "popular": true, "allergens": ["B", "D"] },
+    { "id": 9,  "cat": "curry", "name": "Panang Curry", "desc": "Cremiges rotes Curry mit Rind, Kaffirlimette & Erdnüssen, dazu Jasminreis", "price": 15.5, "emoji": "🍛", "spice": 2, "veggie": false, "allergens": ["B", "D", "E"] },
+    { "id": 10, "cat": "curry", "name": "Massaman Curry", "desc": "Mildes Curry mit Kartoffeln, Zwiebeln & Cashews – mit Tofu, dazu Jasminreis", "price": 13.5, "emoji": "🥘", "spice": 1, "veggie": true, "allergens": ["F", "H"] },
+    { "id": 11, "cat": "curry", "name": "Gelbes Curry mit Ente", "desc": "Knusprige Ente in Kurkuma-Curry mit Ananas, dazu Jasminreis", "price": 17.9, "emoji": "🦆", "spice": 1, "veggie": false, "allergens": ["D"] },
+
+    { "id": 12, "cat": "wok", "name": "Pad Thai", "desc": "Gebratene Reisnudeln mit Ei, Tofu, Sprossen & Erdnüssen – wahlweise mit Garnelen", "price": 13.5, "emoji": "🍜", "spice": 1, "veggie": false, "popular": true, "allergens": ["C", "D", "E", "F"] },
+    { "id": 13, "cat": "wok", "name": "Pad Krapow", "desc": "Hackfleisch mit Thai-Basilikum & Chili, Spiegelei, Jasminreis", "price": 12.9, "emoji": "🍳", "spice": 3, "veggie": false, "allergens": ["C", "D", "F"] },
+    { "id": 14, "cat": "wok", "name": "Pad See Ew", "desc": "Breite Reisnudeln mit Brokkoli & dunkler Sojasauce – mit Tofu", "price": 12.5, "emoji": "🥢", "spice": 0, "veggie": true, "allergens": ["A", "F"] },
+    { "id": 15, "cat": "wok", "name": "Khao Pad", "desc": "Thai-Bratreis mit Gemüse, Ei & Limette", "price": 11.5, "emoji": "🍚", "spice": 0, "veggie": true, "allergens": ["C", "F"] },
+
+    { "id": 16, "cat": "dessert", "name": "Mango Sticky Rice", "desc": "Klebreis mit Kokosmilch, Sesam & frischer Mango", "price": 6.9, "emoji": "🥭", "spice": 0, "veggie": true, "popular": true, "allergens": ["K"] },
+    { "id": 17, "cat": "dessert", "name": "Gebackene Banane", "desc": "Im Teigmantel mit Honig & Sesam", "price": 5.5, "emoji": "🍌", "spice": 0, "veggie": true, "allergens": ["A", "C", "K"] },
+
+    { "id": 18, "cat": "drinks", "name": "Thai Iced Tea", "desc": "Schwarztee mit Kondensmilch auf Eis", "price": 4.5, "emoji": "🧋", "spice": 0, "veggie": true, "allergens": ["G"] },
+    { "id": 19, "cat": "drinks", "name": "Hausgemachte Limonade", "desc": "Zitronengras & Limette, 0,4 l", "price": 4.2, "emoji": "🍋", "spice": 0, "veggie": true, "allergens": [] },
+    { "id": 20, "cat": "drinks", "name": "Singha Bier", "desc": "Thailändisches Lagerbier, 0,33 l", "price": 3.9, "emoji": "🍺", "spice": 0, "veggie": true, "allergens": ["A"] }
+  ]
+}

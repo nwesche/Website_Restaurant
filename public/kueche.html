@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#16120f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Küche">
+  <meta name="robots" content="noindex">
+  <title>Küche · Baan Siam</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👩‍🍳</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/kueche.css">
+</head>
+<body>
+
+  <!-- Anmeldung -->
+  <section class="login" id="login">
+    <form class="login__box" id="loginForm">
+      <div class="login__logo">บ</div>
+      <h1>Küchen-Dashboard</h1>
+      <p>Baan Siam · Bestellungen live</p>
+      <label class="login__field">
+        <span>PIN</span>
+        <input id="pinInput" type="password" inputmode="numeric" autocomplete="current-password" placeholder="••••" required>
+      </label>
+      <p class="login__error" id="loginError" hidden></p>
+      <button class="kbtn kbtn--primary kbtn--xl" type="submit">Dashboard starten</button>
+      <small>Beim Start wird der Bestell-Ton aktiviert.</small>
+    </form>
+  </section>
+
+  <!-- Dashboard -->
+  <div class="app" id="app" hidden>
+    <header class="topbar">
+      <div class="topbar__brand">
+        <span class="topbar__logo">บ</span>
+        <div>
+          <strong>Küche</strong>
+          <span class="conn" id="conn"><i></i><em>Verbinde …</em></span>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span id="statOpen">0</span><small>offen</small></div>
+        <div class="stat"><span id="statToday">0</span><small>heute</small></div>
+        <div class="stat stat--wide"><span id="statRevenue">0 €</span><small>Umsatz heute</small></div>
+      </div>
+
+      <div class="topbar__actions">
+        <button class="shop-btn" id="shopBtn" title="Online-Bestellungen steuern"><i></i><span id="shopBtnText">Online</span></button>
+        <span class="clock" id="clock">--:--</span>
+        <button class="icon-btn" id="soundBtn" aria-label="Ton an/aus" title="Ton an/aus">🔔</button>
+        <button class="icon-btn" id="fullscreenBtn" aria-label="Vollbild" title="Vollbild">⛶</button>
+        <button class="icon-btn" id="logoutBtn" aria-label="Abmelden" title="Abmelden">⏻</button>
+      </div>
+    </header>
+
+    <div class="notice" id="testNotice" hidden>🧪 Testmodus aktiv – Bestellungen werden unabhängig von den Öffnungszeiten angenommen (<code>testMode</code> in menu.json).</div>
+
+    <!-- Spalten-Umschalter (Tablet hochkant / Handy) + Archiv -->
+    <nav class="lanes-nav" id="lanesNav">
+      <button class="lane-tab is-active" data-lane="neu">Neu <b id="countNeu">0</b></button>
+      <button class="lane-tab" data-lane="zubereitung">In Arbeit <b id="countZubereitung">0</b></button>
+      <button class="lane-tab" data-lane="fertig">Fertig <b id="countFertig">0</b></button>
+      <button class="lane-tab lane-tab--archive" data-lane="archiv">Erledigt <b id="countArchiv">0</b></button>
+    </nav>
+
+    <main class="board" id="board" data-view="neu">
+      <section class="lane" data-lane="neu">
+        <h2 class="lane__title"><span class="dot dot--new"></span>Neu <b id="laneCountNeu">0</b></h2>
+        <div class="lane__list" id="listNeu"></div>
+      </section>
+      <section class="lane" data-lane="zubereitung">
+        <h2 class="lane__title"><span class="dot dot--prep"></span>In Zubereitung <b id="laneCountZubereitung">0</b></h2>
+        <div class="lane__list" id="listZubereitung"></div>
+      </section>
+      <section class="lane" data-lane="fertig">
+        <h2 class="lane__title"><span class="dot dot--ready"></span>Fertig / Unterwegs <b id="laneCountFertig">0</b></h2>
+        <div class="lane__list" id="listFertig"></div>
+      </section>
+      <section class="lane lane--archive" data-lane="archiv">
+        <h2 class="lane__title"><span class="dot"></span>Erledigt &amp; storniert <b id="laneCountArchiv">0</b></h2>
+        <div class="lane__list lane__list--archive" id="listArchiv"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Annehmen: Wann ist die Bestellung fertig? -->
+  <dialog class="modal" id="acceptDialog">
+    <form method="dialog">
+      <h3 id="acceptTitle">Bestellung annehmen</h3>
+      <p id="acceptText">Wann ist sie fertig? Der Kunde bekommt die Uhrzeit per E-Mail und auf der Status-Seite.</p>
+      <div class="choice-grid" id="acceptChoices"></div>
+      <div class="modal__actions">
+        <button class="kbtn" value="cancel">Abbrechen</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Stornieren mit Grund -->
+  <dialog class="modal" id="cancelDialog">
+    <form method="dialog">
+      <h3 id="cancelTitle">Bestellung stornieren</h3>
+      <p>Warum? Der Kunde sieht den Grund per E-Mail und auf der Status-Seite.</p>
+      <p class="refund-note" id="cancelRefundNote" hidden></p>
+      <div class="choice-list" id="cancelChoices"></div>
+      <label class="modal__field">
+        <span>Zusätzlicher Hinweis (optional)</span>
+        <input id="cancelNote" maxlength="200" placeholder="z. B. „Die Ente ist heute leider aus.“">
+      </label>
+      <div class="modal__actions">
+        <button class="kbtn" value="cancel">Zurück</button>
+        <button class="kbtn kbtn--danger" id="cancelConfirm" value="ok" disabled>Stornieren</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Online-Bestellungen steuern -->
+  <dialog class="modal modal--wide" id="shopDialog">
+    <form method="dialog">
+      <h3>Online-Bestellungen</h3>
+      <p>Änderungen sehen Kunden sofort auf der Website.</p>
+      <div class="segmented" id="shopModes">
+        <button type="button" data-mode="open">🟢 Normal</button>
+        <button type="button" data-mode="pickup_only">🛍️ Nur Abholung</button>
+        <button type="button" data-mode="paused">⏸️ Pausiert</button>
+      </div>
+      <p class="modal__label">Zusätzliche Wartezeit</p>
+      <div class="segmented" id="shopExtra">
+        <button type="button" data-extra="0">Keine</button>
+        <button type="button" data-extra="15">+15 Min</button>
+        <button type="button" data-extra="30">+30 Min</button>
+        <button type="button" data-extra="45">+45 Min</button>
+      </div>
+      <label class="modal__field">
+        <span>Hinweis für Kunden (optional)</span>
+        <input id="shopMessage" maxlength="200" placeholder="z. B. „Heute ab 21 Uhr nur noch Abholung.“">
+      </label>
+      <div class="modal__actions">
+        <button class="kbtn" value="cancel">Abbrechen</button>
+        <button class="kbtn kbtn--primary" value="ok">Speichern</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="ktoast" id="ktoast" role="status" aria-live="polite"></div>
+  <div id="printArea" aria-hidden="true"></div>
+
+  <script src="js/kueche.js"></script>
+</body>
+</html>

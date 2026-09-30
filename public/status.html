@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#fbf7f2">
+  <meta name="robots" content="noindex">
+  <title>Bestellstatus · Baan Siam</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍜</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="status-page">
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="logo">
+        <span class="logo__mark">บ</span>
+        <span class="logo__text">Baan Siam</span>
+      </a>
+      <a href="index.html" class="btn btn--ghost btn--small">Zur Speisekarte</a>
+    </div>
+  </header>
+
+  <main class="container status">
+    <section class="status__card" id="statusCard">
+      <p class="status__loading" id="statusLoading">Status wird geladen …</p>
+
+      <div id="statusContent" hidden>
+        <span class="eyebrow" id="statusNumber">Bestellung</span>
+        <h1 id="statusHeadline">Deine Bestellung</h1>
+        <p class="status__eta" id="statusEta"></p>
+
+        <ol class="tracker" id="tracker">
+          <li data-step="neu"><span></span>Eingegangen</li>
+          <li data-step="zubereitung"><span></span>In Zubereitung</li>
+          <li data-step="fertig"><span></span><em id="trackerReadyLabel">Unterwegs</em></li>
+        </ol>
+        <p class="tracker__cancelled" id="statusCancelled" hidden></p>
+
+        <h2 class="status__subhead">Deine Bestellung</h2>
+        <ul class="status__items" id="statusItems"></ul>
+        <div class="status__total"><span>Gesamt</span><strong id="statusTotal"></strong></div>
+        <p class="status__pay" id="statusPay"></p>
+
+        <p class="status__updated">Diese Seite aktualisiert sich automatisch. <span id="statusUpdated"></span></p>
+      </div>
+
+      <div id="statusError" hidden>
+        <h1>Bestellung nicht gefunden</h1>
+        <p>Der Link ist ungültig oder die Bestellung ist schon älter. Bei Fragen ruf uns gerne an.</p>
+      </div>
+    </section>
+
+    <p class="status__help">Fragen zur Bestellung? <a href="tel:+49301234567" id="statusPhone">030 123 45 67</a></p>
+  </main>
+
+  <script src="js/status.js"></script>
+</body>
+</html>

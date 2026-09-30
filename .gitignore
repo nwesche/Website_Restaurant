@@ -1,0 +1,10 @@
+# Laufzeitdaten (Bestellungen, Mails) – werden vom Server erzeugt
+data/
+__pycache__/
+*.pyc
+# Pitch-/Vorschlag-Unterlagen bleiben lokal
+pitch/
+screenshots/
+vorschlag/
+*.pdf
+public/_t_*
